@@ -433,7 +433,6 @@ button:focus {
 .modal-form {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
 }
 
 .modal-input {
@@ -455,6 +454,16 @@ button:focus {
 .cart-table td{
     text-align: left;
     border: 1px solid black
+}
+.cart-table thead tr th {
+    padding: 7px;
+    background-color: #558ad3;
+}
+.cart-table tbody tr td {
+    padding: 7px;
+}
+.cart-table tfoot tr th {
+    padding: 7px;
 }
 
 .cart-buy{
@@ -543,6 +552,16 @@ button:focus {
         min-width: 300px;
         max-height: 400px;
         padding: 20px;
+    }
+    .modal-form {
+        flex-direction: column;
+    }
+    .modal-input {
+        margin-right: 0;
+        margin-bottom: 10px;
+    }
+    .cart-buy {
+        width: 100%;
     }
     .goods-card {
         width: 325px;

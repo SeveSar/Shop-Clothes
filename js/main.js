@@ -1,3 +1,4 @@
+
 const mySwiper = new Swiper(".swiper-container", {
   loop: true,
 
@@ -16,7 +17,6 @@ const modalClose = document.querySelector(".modal-close");
 const modalCart = document.querySelector(".modal");
 const openModal = () => {
   overlay.classList.add("show");
-  cart.setTotalPrice();
   cart.renderCart();
   setTimeout(() => {
     modalCart.style.transform = "scale(1)";
@@ -171,6 +171,7 @@ const cart = {
 				<td><button class="cart-btn-delete" data-id="${id}">x</button></td>
 			`;
       cartTableGoods.append(trGood);
+      this.setTotalPrice()
     });
   },
   cartCounter() {
@@ -211,16 +212,14 @@ const cart = {
         break;
       }
     }
-		this.setTotalPrice()
-		this.renderCart();
+    this.renderCart();
   },
   deleteGood(id) {
     this.cartGoods = this.cartGoods.filter((item) => {
       return item.id !== id;
     });
 		this.cartCounter();
-		this.setTotalPrice()
-    this.renderCart();
+    this.setTotalPrice();
   },
   minusGood(id) {
     for (const item of this.cartGoods) {
@@ -235,7 +234,6 @@ const cart = {
 				break;
       }
     }
-		this.setTotalPrice()
     this.renderCart();
   },
   setTotalPrice() {
@@ -249,7 +247,7 @@ const cart = {
 		}
   },
 };
-
+cart.setTotalPrice();
 document.body.addEventListener("click", (e) => {
   const target = e.target;
   if (target.classList.contains("cart-btn-plus")) {
@@ -288,3 +286,32 @@ function checkScrollPos(scrollPos, heightH) {
     document.body.classList.remove("section-pt");
   }
 }
+
+// collection info and post
+const form = document.querySelector('.modal-form');
+const btnCheckout = document.querySelector('.cart-buy');
+
+
+const postData = async (data) => {
+  const res = await fetch('server.php', {
+    method: "POST",
+    body: data
+  })
+  return await res.json()
+}
+
+form.addEventListener('submit', (e) => {
+  e.preventDefault();
+  const formData = new FormData(form);
+  formData.append('cartGoods', JSON.stringify(cart.cartGoods));
+  const json = JSON.stringify(Object.fromEntries(formData.entries()));
+  console.log(json);
+  postData(json).then((response) => {
+    if (!response.ok) {
+      throw new Error(response.status);
+    }
+  })
+  .catch(err => {
+    alert("Shomething went wrong. Try again", err)
+  })
+})
