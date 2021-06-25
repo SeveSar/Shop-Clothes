@@ -220,6 +220,7 @@ const cart = {
     });
 		this.cartCounter();
     this.setTotalPrice();
+    this.renderCart();
   },
   minusGood(id) {
     for (const item of this.cartGoods) {
